@@ -84,7 +84,7 @@ def plotmonteCarloLearning():
     plt.title("for 1000 iterations", fontsize=10) # subtitle
 
     plt.xlabel("Episodes")
-    plt.ylabel("Result (Euro)")
+    plt.ylabel("Return (Rounds)")
     avgCurve = None
     for c in curve:
         plt.plot(c, color="grey")
@@ -100,9 +100,9 @@ def plotmonteCarloLearning():
 def main():
     print(f"Simple Monte Carlo Method: {monteCarloSimple()}")
 
-    plotExpectedReturns()
+    # plotExpectedReturns()
 
-    # plotmonteCarloLearning()
+    plotmonteCarloLearning()
 
 
 
