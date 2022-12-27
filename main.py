@@ -6,16 +6,15 @@ random = numpy.random.random
 
 
 def very_simple_monte_carlo():
-
     rounds = list()
     for episode in range(0, 1000000):  # 1 million episodes are played
         p = 1
         round_ = 0
         euro = 4
         while euro >= 2:   # The number of states differs in every episode
+            euro -= 2
             round_ += 1
             if random() < p:
-                euro -= 2
                 p -= 0.1 * random()
                 euro += 3
         rounds.append(round_)
@@ -59,23 +58,23 @@ def simple_monte_carlo_learning_plot():
         fr = dict()
 
         p = 1
-        round_ = 0  # current round
+        state = 0  # current round
         euro = 4  # reward
         # random policy
         # can't play when gambler doesn't have enough money
-        while round_ < 30:
+        while state < 30:
 
             euro -= 2
             if random() < p:
                 p -= 0.1 * random()
                 euro += 3
-            fr[round_] = euro
-            n[round_] += 1
-            round_ += 1
+            fr[state] = euro
+            n[state] += 1
+            state += 1
 
-        for round_ in fr:
-            avg_fr[round_] = avg_fr[round_] + (1 / n[round_]) * \
-                                           (fr[round_] - avg_fr[round_])
+        for state in fr:
+            avg_fr[state] = avg_fr[state] + (1 / n[state]) * \
+                                           (fr[state] - avg_fr[state])
 
         if episode in [1, 10, 100, 1000, 10000]:
             avg_fr_list.append(avg_fr.copy())
@@ -114,19 +113,24 @@ def plot_avg_euro_list(v_list, v_list_episode_count, legend=True):
 
 def main():
 
-    print("")
+    print("What would Information would you like?")
+    print("1. execute very simple Monte Carlo")
+    print("2. execute simple monte carlo learning, get result and simple graph")
+    print("3. execute simple monte carlo learning, get result and graph (as in figure 12)")
 
-    avg_fr_list = simple_monte_carlo_learning_plot()
+    num = input("please input the number of the wanted result \n")
+    print("\n")
 
-    print(np.argmax(avg_fr_list[-1]))
-    print(avg_fr_list[-1])
-
-    plot_avg_euro_list(avg_fr_list, [1, 10, 100, 1000, 10000], legend=True)
-
-
-
-
-
+    if num == "1":
+        print(f"The gambler can expect to play {very_simple_monte_carlo()}")
+    else:
+        avg_fr_list = simple_monte_carlo_learning_plot()
+        print(f"The best time to stop playing is after game {np.argmax(avg_fr_list[-1])}")
+        print(f"The amount of money the gamble has on average when he should stop playing {np.max(avg_fr_list[-1])}")
+        if num == "2":
+            plot_avg_euro(avg_fr_list[-1])
+        else:
+            plot_avg_euro_list(avg_fr_list, [1, 10, 100, 1000, 10000], legend=True)
 
 
 if __name__ == '__main__':
